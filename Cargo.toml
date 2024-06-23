@@ -1,0 +1,19 @@
+[package]
+name = "cands_cli"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authoer = "Digitalservo"
+about = "Digitalservo USBCAN CLI"
+description = "Digitalservo USBCAN CLI"
+readme = "README.md"
+homepage = "https://github.com/DigitalServo/USBCAN-CLI"
+repository = "https://github.com/DigitalServo/USBCAN-CLI"
+keywords = ["cli", "Japan", "Rust"]
+categories = ["command-line-utilities"]
+
+
+[dependencies]
+cands_cyphal = "0.1.2"
+clap = { version = "4.5.7", features = ["derive"] }
+
