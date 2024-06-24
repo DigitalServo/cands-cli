@@ -1,7 +1,5 @@
 use std::str::FromStr;
-
 use clap::{Parser, ValueEnum};
-
 use cands_cyphal::CANInterface;
 
 #[derive(Debug, Clone, ValueEnum)]
@@ -27,6 +25,20 @@ enum DataType {
     I64,    
     F32,
     F64
+}
+
+pub fn str_vectorize(x: &str) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+    if x.starts_with('[') & x.ends_with(']') {
+        Ok(x
+            .replace(' ', "")
+            .strip_prefix('[').unwrap()
+            .strip_suffix(']').unwrap()
+            .split(',')
+            .map(|str| str.into())
+            .collect())
+    } else {
+        Ok(Vec::from([x.into()]))
+    }
 }
 
 #[derive(Parser)]
@@ -89,56 +101,56 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
             let dest: u8 = args.dest.unwrap();
             let key: String = args.key.unwrap();
             let data_type: DataType = args.type_.unwrap();
-            let value_str: String = args.value.unwrap();
+            let value_str: Vec<String> = str_vectorize(&args.value.unwrap()).unwrap();
 
             match data_type {
                 DataType::Bool => {
-                    let x: bool = FromStr::from_str(&value_str)?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<bool> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::String => {
-                    let x = value_str;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<String> = value_str;
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::U8 => {
-                    let x: u8 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<u8> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::U16 => {
-                    let x: u16 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<u16> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::U32 => {
-                    let x: u32 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<u32> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::U64 => {
-                    let x: u64 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<u64> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::I8 => {
-                    let x: i8 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<i8> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::I16 => {
-                    let x: i16 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<i16> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::I32 => {
-                    let x: i32 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<i32> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::I64 => {
-                    let x: i64 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<i64> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },    
                 DataType::F32 => {
-                    let x: f32 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<f32> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 },
                 DataType::F64 => {
-                    let x: f64 = value_str.parse()?;
-                    can_interface.send_digitalservo_response(dest, &key, &[x])?;
+                    let x: Vec<f64> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_response(dest, &key, &x)?;
                 }
             };
         }
@@ -146,56 +158,56 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         Command::Message => {
             let key: String = args.key.unwrap();
             let data_type: DataType = args.type_.unwrap();
-            let value_str: String = args.value.unwrap();
+            let value_str: Vec<String> = str_vectorize(&args.value.unwrap()).unwrap();
 
             match data_type {
                 DataType::Bool => {
-                    let x: bool = FromStr::from_str(&value_str)?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<bool> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::String => {
-                    let x = value_str;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<String> = value_str;
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::U8 => {
-                    let x: u8 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<u8> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::U16 => {
-                    let x: u16 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<u16> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::U32 => {
-                    let x: u32 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<u32> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::U64 => {
-                    let x: u64 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<u64> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::I8 => {
-                    let x: i8 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<i8> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::I16 => {
-                    let x: i16 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<i16> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::I32 => {
-                    let x: i32 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<i32> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::I64 => {
-                    let x: i64 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<i64> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },    
                 DataType::F32 => {
-                    let x: f32 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<f32> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 },
                 DataType::F64 => {
-                    let x: f64 = value_str.parse()?;
-                    can_interface.send_digitalservo_message(&key, &[x])?;
+                    let x: Vec<f64> = value_str.iter().map(|x| FromStr::from_str(&x).unwrap()).collect();
+                    can_interface.send_digitalservo_message(&key, &x)?;
                 }
             };
         },
