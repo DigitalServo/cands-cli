@@ -12,9 +12,12 @@ repository = "https://github.com/DigitalServo/USBCAN-CLI"
 keywords = ["cli", "Japan", "Rust"]
 categories = ["command-line-utilities"]
 
+[features]
+v1 = ["cands_cyphal/drvcan_v1"]
+v2 = ["cands_cyphal/drvcan_v2"]
 
 [dependencies]
-cands_cyphal = "0.1.2"
+cands_cyphal = {version = "0.1.5", features = ["usb-ftdi"]}
 clap = { version = "4.5.7", features = ["derive"] }
 serde = { version = "1.0.203", features = ["derive"] } 
 csv = "1.3.0"

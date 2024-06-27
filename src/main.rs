@@ -89,18 +89,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
     match args.command {
 
         Command::Start => {
+            #[cfg(any(feature="v1", feature="v2"))]
             match args.dest {
                 Some(dest_id) => can_interface.drive_enable(dest_id)?,
                 None => can_interface.drive_enable_all()?
-            }                
+            }    
         },
 
-        Command::Stop => match args.dest {
-            Some(dest_id) => can_interface.drive_disable(dest_id)?,
-            None => can_interface.drive_disable_all()?
+        Command::Stop => {
+            #[cfg(any(feature="v1", feature="v2"))]
+            match args.dest {
+                Some(dest_id) => can_interface.drive_disable(dest_id)?,
+                None => can_interface.drive_disable_all()?
+            }
         },
 
         Command::SetParam => {
+            
             let dest: u8 = args.dest.unwrap();
             let path: std::path::PathBuf = args.path.unwrap();
 
@@ -130,6 +135,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         }
 
         Command::ReadParam => {
+
             let dest: u8 = args.dest.unwrap();
             let path: std::path::PathBuf = args.path.unwrap();
 
@@ -152,6 +158,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
         }
 
         Command::Request => {
+
             let dest: u8 = args.dest.unwrap();
             let key: String = args.key.unwrap();
 

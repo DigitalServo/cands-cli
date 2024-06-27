@@ -105,9 +105,9 @@ dependencies = [
 
 [[package]]
 name = "cands_cyphal"
-version = "0.1.2"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1fe37a6942e19ccd7e55de6e9129083d3f8af2fc1ca387a8dcbc2186a7d1b556"
+checksum = "98aa7f39ad15adb045d970ba066fa6514072fd3bd5f37bfde150d15275c9426a"
 dependencies = [
  "cands_interface",
  "cands_presentation",
@@ -116,9 +116,9 @@ dependencies = [
 
 [[package]]
 name = "cands_interface"
-version = "0.1.0"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30ecbd4f3b1a93bacca300326ae9728e822e790dc46d1af27c6a060cea98d795"
+checksum = "97e5f5fd7553e730a10fb338ee172def172f63fd84fb4cfc2fa9a190e9eacb13"
 dependencies = [
  "async-io",
  "ftdi-embedded-hal",
